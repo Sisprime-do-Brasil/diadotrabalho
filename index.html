@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cartões do Trabalhador · Sisprime</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Instrument+Sans:wght@300;400;500;600&family=Caveat:wght@500;600&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --c1: #0B3471; --c2: #0047BB; --c3: #00A98E;
+  --c4: #009ADE; --c5: #8A1E41; --c6: #6558B0;
+  --c7: #0B3471; --c8: #0047BB; --c9: #009ADE; --c10: #8A1E41;
+  --custom: #444;
+  --white: #ffffff; --off: #f5f4f0; --text: #1a1a1a; --muted: #888;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Sans',sans-serif;background:var(--off);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+.cursor{width:10px;height:10px;background:var(--c1);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transition:transform 0.15s ease;transform:translate(-50%,-50%)}
+.cursor-ring{width:36px;height:36px;border:1.5px solid var(--c1);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:transform 0.35s ease,width 0.3s,height 0.3s;transform:translate(-50%,-50%);opacity:0.5}
+
+header{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(245,244,240,0.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,0.06)}
+.logo-img{height:64px;width:auto}
+.header-tag{font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 40px 80px;position:relative;overflow:hidden;text-align:center}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.22;animation:float 8s ease-in-out infinite}
+.orb1{width:500px;height:500px;background:var(--c1);top:-150px;right:-100px;animation-delay:0s}
+.orb2{width:350px;height:350px;background:var(--c3);bottom:-80px;left:-60px;animation-delay:3s}
+.orb3{width:250px;height:250px;background:var(--c4);top:40%;left:30%;animation-delay:5s}
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-30px) scale(1.05)}}
+
+.hero-content{position:relative;z-index:1;max-width:680px}
+.hero-eyebrow{display:inline-block;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--c1);background:rgba(27,44,113,0.08);padding:6px 16px;border-radius:100px;margin-bottom:28px;animation:fadeUp 0.8s ease both}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(40px,7vw,70px);font-weight:400;line-height:1.1;margin-bottom:20px;animation:fadeUp 0.8s 0.15s ease both}
+.hero h1 em{font-style:italic;color:var(--c1)}
+.hero-sub{font-size:17px;font-weight:300;color:#555;line-height:1.7;max-width:480px;margin:0 auto 40px;animation:fadeUp 0.8s 0.3s ease both}
+.btn-start{display:inline-flex;align-items:center;gap:10px;background:var(--c1);color:white;font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:15px;padding:16px 36px;border-radius:100px;border:none;cursor:pointer;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s;animation:fadeUp 0.8s 0.45s ease both;box-shadow:0 8px 32px rgba(27,44,113,0.25)}
+.btn-start:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(27,44,113,0.35)}
+.hero-cards{position:absolute;z-index:0;display:flex;gap:14px;bottom:-60px;left:50%;transform:translateX(-50%);animation:fadeUp 1s 0.6s ease both}
+.hc{width:130px;height:65px;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,0.15)}
+.hc:nth-child(1){background:var(--c1);transform:rotate(-8deg) translateY(-10px)}
+.hc:nth-child(2){background:var(--c3);transform:rotate(-3deg) translateY(-4px)}
+.hc:nth-child(3){background:var(--c4);transform:rotate(2deg)}
+.hc:nth-child(4){background:var(--c2);transform:rotate(6deg) translateY(-6px)}
+.hc:nth-child(5){background:var(--c5);transform:rotate(10deg) translateY(-14px)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+.app-section{padding:100px 20px;max-width:960px;margin:0 auto}
+.steps-indicator{display:flex;align-items:center;justify-content:center;margin-bottom:56px;flex-wrap:wrap;gap:4px}
+.si{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);transition:color 0.3s}
+.si.active{color:var(--c1)} .si.done{color:var(--c3)}
+.sn{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;border:1.5px solid currentColor;transition:all 0.3s}
+.si.active .sn{background:var(--c1);color:white;border-color:var(--c1)}
+.si.done .sn{background:var(--c3);color:white;border-color:var(--c3)}
+.sl{width:50px;height:1px;background:#ddd;margin:0 6px}
+
+.panel{display:none;animation:panelIn 0.5s ease both}
+.panel.active{display:block}
+@keyframes panelIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.panel-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:400;text-align:center;margin-bottom:6px}
+.panel-title em{font-style:italic;color:var(--c1)}
+.panel-sub{text-align:center;color:var(--muted);font-size:14px;margin-bottom:40px}
+
+/* GRID DE CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.card-option{border-radius:14px;padding:26px 24px;cursor:pointer;position:relative;overflow:hidden;transition:transform 0.25s,box-shadow 0.25s;border:3px solid transparent;min-height:160px;display:flex;flex-direction:column;justify-content:space-between}
+.card-option:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,0.2)}
+.card-option.selected{border-color:rgba(255,255,255,0.5);box-shadow:0 0 0 4px rgba(255,255,255,0.35),0 20px 50px rgba(0,0,0,0.25);transform:translateY(-5px) scale(1.02)}
+.card-option::before{content:'';position:absolute;border-radius:50%;width:200%;height:200%;top:-80%;right:-60%;background:rgba(255,255,255,0.06);pointer-events:none}
+.co-theme{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:8px}
+.co-label{font-family:'Playfair Display',serif;font-style:italic;font-size:18px;color:white;font-weight:400}
+.co-check{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;margin-top:16px;align-self:flex-end;transition:all 0.2s}
+.card-option.selected .co-check{background:white}
+.card-option.selected .co-check svg{opacity:1}
+.co-check svg{opacity:0;transition:opacity 0.2s}
+
+/* Cores dos cards */
+.bg1{background:#0B3471}.bg2{background:#0047BB}.bg3{background:#00A98E}
+.bg4{background:#009ADE}.bg5{background:#8A1E41}.bg6{background:#6558B0}
+.bg7{background:#185FA5}.bg8{background:#9ea1a2}.bg9{background:#abc8e7}
+.bg-custom{background:var(--custom)}
+
+/* CARD CUSTOM */
+.card-option.custom-card{background:white;border:2px dashed #ccc;color:var(--text)}
+.card-option.custom-card .co-theme{color:var(--muted)}
+.card-option.custom-card .co-label{color:var(--text);font-size:15px}
+.card-option.custom-card.selected{border-color:var(--c1);box-shadow:0 0 0 3px rgba(27,44,113,0.12),0 20px 50px rgba(0,0,0,0.1);background:rgba(27,44,113,0.03)}
+.card-option.custom-card .co-check{background:rgba(27,44,113,0.1)}
+.card-option.custom-card.selected .co-check{background:var(--c1)}
+.custom-input-wrap{margin-top:10px;display:none}
+.custom-input-wrap.show{display:block}
+.color-dot{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform 0.15s,border-color 0.15s;flex-shrink:0}.color-dot:hover{transform:scale(1.2)}.color-dot.active{border-color:white;box-shadow:0 0 0 2px rgba(0,0,0,0.3);transform:scale(1.15)}.custom-theme-input,.custom-label-input{width:100%;border:1px solid #e0e0e0;border-radius:8px;padding:8px 12px;font-family:'Instrument Sans',sans-serif;font-size:13px;color:var(--text);outline:none;margin-bottom:6px;transition:border-color 0.2s}
+.custom-theme-input:focus,.custom-label-input:focus{border-color:var(--c1)}
+
+/* STEP 2 */
+.sel-preview{display:flex;align-items:center;gap:14px;padding:14px 20px;border-radius:12px;background:white;border:1.5px solid #eee;margin-bottom:28px}
+.prev-swatch{width:40px;height:40px;border-radius:8px;flex-shrink:0}
+.prev-info{flex:1}
+.prev-theme{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.prev-label{font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:var(--text);margin-top:2px}
+.prev-change{font-size:12px;color:var(--c1);cursor:pointer;font-weight:500;flex-shrink:0}
+.prev-change:hover{text-decoration:underline}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-row{margin-bottom:20px}
+.form-label{display:block;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.form-input,.form-textarea{width:100%;background:white;border:1.5px solid #e0e0e0;border-radius:10px;padding:13px 16px;font-family:'Instrument Sans',sans-serif;font-size:15px;color:var(--text);transition:border-color 0.2s,box-shadow 0.2s;outline:none;resize:none}
+.form-input:focus,.form-textarea:focus{border-color:var(--c1);box-shadow:0 0 0 3px rgba(27,44,113,0.08)}
+.form-textarea{min-height:130px;line-height:1.7}
+.char-count{font-size:11px;color:var(--muted);text-align:right;margin-top:4px}
+
+/* NAV */
+.nav-btns{display:flex;justify-content:space-between;align-items:center;margin-top:36px}
+.btn-nav{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:100px;font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:14px;cursor:pointer;transition:all 0.2s;border:none}
+.btn-back{background:white;color:var(--muted);border:1.5px solid #ddd}
+.btn-back:hover{color:var(--text);border-color:#bbb}
+.btn-next{background:var(--c1);color:white;box-shadow:0 8px 24px rgba(27,44,113,0.25)}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(27,44,113,0.35)}
+.btn-next:disabled{background:#ccc;box-shadow:none;cursor:not-allowed;transform:none}
+
+/* STEP 3 - CARTÃO GERADO */
+.result-wrap{display:flex;flex-direction:column;align-items:center;gap:28px}
+.gen-card{width:100%;max-width:700px;aspect-ratio:2/1;border-radius:20px;position:relative;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.22)}
+.gc-bg{position:absolute;inset:0}
+.gc-deco1{position:absolute;border-radius:50%;background:rgba(255,255,255,0.07);width:80%;height:160%;top:-50%;right:-25%;pointer-events:none}
+.gc-deco2{position:absolute;border-radius:50%;background:rgba(255,255,255,0.04);width:50%;height:100%;bottom:-40%;right:5%;pointer-events:none}
+.gc-border{position:absolute;inset:10px;border-radius:14px;border:1px solid rgba(255,255,255,0.2);pointer-events:none;z-index:2}
+.gc-content{position:relative;z-index:3;height:100%;padding:7% 7%;display:flex;flex-direction:column;justify-content:space-between}
+
+.gc-label{font-size:clamp(9px,1.1vw,11px);font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:10px}
+.gc-bottom{display:flex;justify-content:space-between;align-items:flex-end}
+.gc-msg-area{}
+.gc-from{font-size:clamp(12px,1.6vw,15px);color:rgba(255,255,255,0.65);margin-bottom:3px}
+.gc-to{font-size:clamp(12px,1.6vw,15px);color:rgba(255,255,255,0.65);margin-bottom:8px}
+.gc-name{color:white;font-weight:600}
+.gc-msg{font-family:'Lora',Georgia,serif;font-size:clamp(15px,2.2vw,24px);color:white;line-height:1.5;max-width:62%;font-weight:600;font-family:'Dancing Script',cursive}
+.gc-sign{font-family:'Lora',Georgia,serif;font-size:clamp(13px,2vw,19px);color:rgba(255,255,255,0.78);position:absolute;bottom:20%;right:7%;z-index:4}
+.gc-logo{position:absolute;bottom:4%;right:5%;z-index:5;display:flex;align-items:center}
+.gc-logo img{height:clamp(24px,3.5vw,40px);width:auto;opacity:0.95;display:block}
+
+/* custom card no step 3 */
+.gen-card.custom-bg .gc-bg{background:#2d2d2d}
+
+.result-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.btn-action{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:100px;font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:14px;cursor:pointer;border:none;transition:all 0.2s}
+.btn-primary{background:var(--c1);color:white;box-shadow:0 8px 24px rgba(27,44,113,0.3)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(27,44,113,0.4)}
+.btn-secondary{background:white;color:var(--text);border:1.5px solid #ddd}
+.btn-secondary:hover{border-color:var(--c1);color:var(--c1)}
+
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:white;padding:14px 24px;border-radius:100px;font-size:14px;font-weight:500;z-index:9999;transition:transform 0.4s ease;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+footer{text-align:center;padding:40px;font-size:12px;color:var(--muted);border-top:1px solid #e8e8e8;margin-top:60px}
+@media(max-width:600px){header{padding:14px 20px}.hero{padding:100px 20px 60px}.form-grid{grid-template-columns:1fr}.hero-cards{display:none}.sl{width:24px}}
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap");
+
+  /* ── MODAL COMO ENVIAR ── */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:10000;align-items:center;justify-content:center;padding:20px}
+  .modal-overlay.open{display:flex}
+  .modal-box{background:#fff;border-radius:20px;max-width:520px;width:100%;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.25);animation:modalIn 0.3s ease}
+  @keyframes modalIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  .modal-header{background:#0B3471;padding:24px 28px;display:flex;align-items:center;justify-content:space-between}
+  .modal-header h3{font-family:'Instrument Sans',sans-serif;font-size:16px;font-weight:600;color:white;letter-spacing:0.3px}
+  .modal-close{background:rgba(255,255,255,0.15);border:none;color:white;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background 0.2s}
+  .modal-close:hover{background:rgba(255,255,255,0.25)}
+  .modal-body{padding:28px}
+  .modal-channel{margin-bottom:24px}
+  .modal-channel:last-child{margin-bottom:0}
+  .modal-channel-title{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .modal-channel-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .modal-channel-icon.email{background:#0B3471}
+  .modal-channel-icon.teams{background:#6558B0}
+  .modal-channel-title span{font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:15px;color:#1a1a1a}
+  .modal-steps{display:flex;flex-direction:column;gap:10px;padding-left:46px}
+  .modal-step{display:flex;align-items:flex-start;gap:10px}
+  .modal-step-num{width:22px;height:22px;border-radius:50%;background:#0B3471;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .modal-channel-icon.teams ~ .modal-steps .modal-step-num{background:#6558B0}
+  .modal-step p{font-size:14px;color:#555;line-height:1.6}
+  .modal-step strong{color:#1a1a1a;font-weight:600}
+  .modal-divider{height:1px;background:#eee;margin:20px 0}
+  .modal-tip{background:#f7f9fc;border-radius:10px;padding:14px 16px;display:flex;gap:10px;align-items:flex-start}
+  .modal-tip svg{flex-shrink:0;margin-top:2px}
+  .modal-tip p{font-size:13px;color:#555;line-height:1.6}
+  .modal-tip strong{color:#0B3471}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<header>
+  <img class="logo-img" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyNy4yLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCA2MjAuOSAzMDguMiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNjIwLjkgMzA4LjI7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+DQoJLnN0MHtmaWxsOiMwQjM0NzE7fQ0KCS5zdDF7ZmlsbDojMDA0N0JCO30NCjwvc3R5bGU+DQo8Zz4NCgk8Zz4NCgkJPHBhdGggY2xhc3M9InN0MCIgZD0iTTI4MSwxNDguOFYxNDNjMC0xLjUtMS44LTIuNC0zLTEuNWwtOC42LDYuNXY0NS41SDI4MXYtMzAuOGMxLjItMy43LDIuNy02LjQsNC41LTguMQ0KCQkJYzEuOC0xLjcsMy45LTIuNSw2LjMtMi41YzEuNiwwLDMuMywwLjMsNSwxbDItMTAuNWMtMS43LTEtMy44LTEuNS02LjItMS41QzI4Ny41LDE0MSwyODMuNiwxNDMuNywyODEsMTQ4Ljh6Ii8+DQoJCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xMTcuMSwxNjUuOWMtMi4yLTEtNS0yLTguNS0zLjFjLTMuNS0xLjEtNi0yLjEtNy42LTNjLTEuNi0wLjktMi40LTIuMi0yLjQtMy45YzAtMS42LDAuNy0yLjksMi4yLTQNCgkJCWMxLjUtMSwzLjUtMS42LDYtMS42YzIuMiwwLDQuNSwwLjMsNi45LDFjMi40LDAuNyw0LjUsMS42LDYuNCwyLjdsMy42LTguMmMtMi4xLTEuNS00LjctMi43LTcuNy0zLjVjLTMtMC45LTYuMi0xLjMtOS41LTEuMw0KCQkJYy01LjgsMC0xMC41LDEuNC0xNCw0LjFjLTMuNSwyLjgtNS4yLDYuNS01LjIsMTEuMmMwLDMuMSwwLjgsNS42LDIuMyw3LjZjMS41LDEuOSwzLjMsMy40LDUuNSw0LjRjMi4xLDEsNC45LDIsOC4zLDMuMQ0KCQkJYzMuNSwxLjEsNi4xLDIuMSw3LjcsMy4xYzEuNiwxLDIuNCwyLjMsMi40LDQuMWMwLDEuOC0wLjksMy4zLTIuNiw0LjVjLTEuNywxLjItNC4xLDEuNy03LjIsMS43Yy0yLjYsMC01LjEtMC40LTcuNy0xLjINCgkJCWMtMi41LTAuOC00LjgtMS45LTYuOC0zLjRsLTMuMSw5YzIuMiwxLjcsNC45LDMsOC4xLDRjMy4yLDEsNi42LDEuNSwxMC4yLDEuNWM2LjIsMCwxMS4yLTEuNSwxNS00LjRjMy44LTIuOSw1LjctNyw1LjctMTIuMg0KCQkJYzAtMy4zLTAuOC01LjktMi40LTcuOUMxMjEuMiwxNjguMywxMTkuMywxNjYuOSwxMTcuMSwxNjUuOXoiLz4NCgkJPHBhdGggY2xhc3M9InN0MCIgZD0iTTE0NS40LDE0MS40bC04LjYsNi41djQ1LjVoMTEuNnYtNTAuNEMxNDguNCwxNDEuNCwxNDYuNywxNDAuNSwxNDUuNCwxNDEuNHoiLz4NCgkJPHBhdGggY2xhc3M9InN0MCIgZD0iTTMxNi4xLDE0MS40bC04LjYsNi41djQ1LjVoMTEuNlYxNDNDMzE5LjEsMTQxLjQsMzE3LjMsMTQwLjUsMzE2LjEsMTQxLjR6Ii8+DQoJCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xOTEuMSwxNjUuOWMtMi4yLTEtNS0yLTguNS0zLjFjLTMuNS0xLjEtNi0yLjEtNy42LTNjLTEuNi0wLjktMi40LTIuMi0yLjQtMy45YzAtMS42LDAuNy0yLjksMi4yLTQNCgkJCWMxLjUtMSwzLjUtMS42LDYtMS42YzIuMiwwLDQuNSwwLjMsNi45LDFjMi40LDAuNyw0LjUsMS42LDYuNCwyLjdsMy42LTguMmMtMi4xLTEuNS00LjctMi43LTcuNy0zLjVjLTMtMC45LTYuMi0xLjMtOS41LTEuMw0KCQkJYy01LjgsMC0xMC41LDEuNC0xNCw0LjFjLTMuNSwyLjgtNS4yLDYuNS01LjIsMTEuMmMwLDMuMSwwLjgsNS42LDIuMyw3LjZjMS41LDEuOSwzLjMsMy40LDUuNSw0LjRjMi4xLDEsNC45LDIsOC4zLDMuMQ0KCQkJYzMuNSwxLjEsNi4xLDIuMSw3LjcsMy4xYzEuNiwxLDIuNCwyLjMsMi40LDQuMWMwLDEuOC0wLjksMy4zLTIuNiw0LjVjLTEuNywxLjItNC4xLDEuNy03LjIsMS43Yy0yLjYsMC01LjEtMC40LTcuNy0xLjINCgkJCWMtMi41LTAuOC00LjgtMS45LTYuOC0zLjRsLTMuMSw5YzIuMiwxLjcsNC45LDMsOC4xLDRjMy4yLDEsNi42LDEuNSwxMC4yLDEuNWM2LjIsMCwxMS4yLTEuNSwxNS00LjRjMy44LTIuOSw1LjctNyw1LjctMTIuMg0KCQkJYzAtMy4zLTAuOC01LjktMi40LTcuOUMxOTUuMiwxNjguMywxOTMuMywxNjYuOSwxOTEuMSwxNjUuOXoiLz4NCgkJPHBhdGggY2xhc3M9InN0MCIgZD0iTTQ2NC4zLDE2NC44YzAtNC4zLTAuOC04LjItMi41LTExLjhjLTEuNy0zLjYtNC4yLTYuNS03LjYtOC43Yy0zLjQtMi4yLTcuNi0zLjMtMTIuNS0zLjMNCgkJCWMtNC45LDAtOS4xLDEuMS0xMi45LDMuM2MtMy43LDIuMi02LjYsNS40LTguNiw5LjVjLTIsNC4xLTMuMSw4LjgtMy4xLDE0LjNjMCw1LjgsMS4xLDEwLjcsMy4zLDE0LjhjMi4yLDQsNS4zLDcsOS4xLDkNCgkJCWMzLjgsMiw4LjEsMywxMi45LDNjOC41LDAsMTUuNi0yLjMsMjEuNC02LjlsLTQuNy03LjZjLTQuMywzLjQtOS40LDUuMS0xNS4xLDUuMWMtOC45LDAtMTQtNC43LTE1LjEtMTRoMzQuOA0KCQkJQzQ2NC4xLDE2OS45LDQ2NC4zLDE2Ny43LDQ2NC4zLDE2NC44eiBNNDI4LjgsMTYzLjdjMC41LTQuNSwxLjgtNy45LDQuMS0xMC4yYzIuMy0yLjMsNS4zLTMuNCw5LjEtMy40YzMuNiwwLDYuNCwxLjIsOC40LDMuNg0KCQkJYzIsMi40LDMsNS44LDMuMiwxMC4xSDQyOC44eiIvPg0KCQk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMjQ3LjMsMTQ0Yy0zLjItMS45LTYuNy0yLjktMTAuNS0yLjljLTMuMywwLTI2LDEuNS0yNiwxLjV2NjQuOWgxMS42di0xNi45YzMuMiwxLjksNywyLjgsMTEuNSwyLjgNCgkJCWM0LjMsMCw4LjMtMS4yLDExLjktMy41YzMuNi0yLjMsNi41LTUuNiw4LjYtOS44YzIuMS00LjMsMy4yLTkuMiwzLjItMTQuOWMwLTUuNC0xLTguNi0yLjktMTIuNUMyNTMsMTQ4LjgsMjUwLjQsMTQ1LjksMjQ3LjMsMTQ0DQoJCQl6IE0yNDMuOSwxNzUuNWMtMS4zLDIuNy0zLDQuNy01LjEsNi4xYy0yLjEsMS40LTQuNSwyLjEtNywyLjFjLTIsMC0zLjctMC4yLTUuMS0wLjdjLTEuNC0wLjUtMi44LTEuMy00LjMtMi40di0yOS4zDQoJCQljMCwwLDAsMCwxMS42LDBjMy40LDAsNi4yLDEuNCw4LjQsNC4xYzIuMiwyLjcsMy4zLDUuMywzLjMsMTAuN0MyNDUuOCwxNjkuNywyNDUuMiwxNzIuOSwyNDMuOSwxNzUuNXoiLz4NCgkJPGc+DQoJCQk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMzc5LjEsMTUxLjZjMS4xLTAuMywyLjMtMC41LDMuNC0wLjZDMzgxLjMsMTUxLjIsMzgwLjIsMTUxLjMsMzc5LjEsMTUxLjZ6Ii8+DQoJCQk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNNDA0LjYsMTU1LjRjLTAuNi0zLTEuNi01LjYtMy4xLTcuN2MtMS41LTIuMS0zLjYtMy44LTYuMi00LjljLTIuNi0xLjItNi0xLjgtMTAuMS0xLjgNCgkJCQljMCwwLTguNy0wLjEtMTcuMyw0LjNjLTEuNC0xLjItMy0yLjEtNC44LTIuOWMtMi4zLTAuOS01LjMtMS40LTguOS0xLjRjLTMuOSwwLTIxLjIsMS41LTIxLjIsMS41djUwLjhoMTEuN3YtNDINCgkJCQljMCwwLDcuMi0wLjMsOC41LTAuM2MzLjksMCw2LjcsMS4zLDguMSwzLjljMS40LDIuNiwyLjEsNS41LDIuMSwxMS4ydjI3LjJIMzc1di0yNy40YzAtMi4yLTAuMS00LjItMC4zLTYuMQ0KCQkJCWMtMC4yLTEuOS0wLjYtMy43LTEuMS01LjRsLTAuMy0wLjhjMCwwLDIuNi0xLjIsNS44LTEuOWMxLjEtMC4zLDIuMi0wLjUsMy40LTAuNmMwLjQsMCwwLjcsMCwxLjEsMGM0LDAsNi44LDEuMyw4LjIsMy45DQoJCQkJYzEuNCwyLjYsMi4xLDYuNywyLjEsMTIuNHYyNmgxMS43di0yNy45QzQwNS41LDE2MS44LDQwNS4yLDE1OC41LDQwNC42LDE1NS40eiIvPg0KCQk8L2c+DQoJPC9nPg0KCTxnPg0KCQk8cGF0aCBjbGFzcz0ic3QxIiBkPSJNNDk1LjIsODguN0w0OTQuOCw5OWw0MC4yLDguM2wtMzUuMS0yMS4xQzQ5Ny45LDg1LDQ5NS4zLDg2LjQsNDk1LjIsODguN3oiLz4NCgkJPHBhdGggY2xhc3M9InN0MSIgZD0iTTQ5MS42LDE2OC4zYy0wLjEsMy4yLDQuMSw0LjUsNS43LDEuN2wzNy43LTYyLjdsLTQyLjEsMzEuNUw0OTEuNiwxNjguM3oiLz4NCgkJPHBhdGggY2xhc3M9InN0MSIgZD0iTTQ1Ny4yLDkxLjNjLTIuNS0wLjUtNC41LDIuMS0zLjQsNC40bDI0LjMsNDkuNmMwLjgsMS43LDMuMSwyLjMsNC42LDEuMWwxMC4xLTcuNmwxLjgtMzkuOEw0NTcuMiw5MS4zeiIvPg0KCTwvZz4NCjwvZz4NCjwvc3ZnPg0K" alt="Sisprime">
+  <span class="header-tag">Dia do Trabalhador · 2026</span>
+</header>
+
+<section class="hero">
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="hero-orb orb3"></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">1º de Maio · Dia do Trabalhador</span>
+    <h1>Celebre quem faz<br>parte da sua <em>jornada</em></h1>
+    <p class="hero-sub">Envie um cartão especial para alguém que marcou seu caminho profissional. É rápido, bonito e cheio de significado.</p>
+    <a class="btn-start" href="#app" onclick="startApp()">
+      Criar meu cartão
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+  <div class="hero-cards">
+    <div class="hc"></div><div class="hc"></div><div class="hc"></div><div class="hc"></div><div class="hc"></div>
+  </div>
+</section>
+
+<section class="app-section" id="app">
+
+  <div class="steps-indicator">
+    <div class="si active" id="si-1"><div class="sn">1</div><span>Tema</span></div>
+    <div class="sl"></div>
+    <div class="si" id="si-2"><div class="sn">2</div><span>Mensagem</span></div>
+    <div class="sl"></div>
+    <div class="si" id="si-3"><div class="sn">3</div><span>Compartilhe</span></div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="panel active" id="panel-1">
+    <h2 class="panel-title">Qual é o seu <em>sentimento?</em></h2>
+    <p class="panel-sub">Escolha o tema que melhor representa o que você quer expressar para essa pessoa.</p>
+
+    <div class="cards-grid">
+      <div class="card-option bg1" data-id="1" data-theme="Inspiração" data-label="Inspiração" data-color="#0B3471" onclick="selectCard(this)">
+        <div><div class="co-theme">Tema</div><div class="co-label">Inspiração</div></div>
+        <div class="co-check"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.5 2.5 5-5" stroke="#1B2C71" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="card-option bg2" data-id="2" data-theme="Orgulho" data-label="Orgulho" data-color="#0047BB" onclick="selectCard(this)">
+        <div><div class="co-theme">Tema</div><div class="co-label">Orgulho</div></div>
+        <div class="co-check"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.5 2.5 5-5" stroke="#0047BB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="card-option bg3" data-id="3" data-theme="Gratidão" data-label="Gratidão" data-color="#00A98E" onclick="selectCard(this)">
+        <div><div class="co-theme">Tema</div><div class="co-label">Gratidão</div></div>
+        <div class="co-check"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.5 2.5 5-5" stroke="#00A98E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="card-option bg4" data-id="4" data-theme="Alegria no Trabalho" data-label="Alegria no Trabalho" data-color="#009ADE" onclick="selectCard(this)">
+        <div><div class="co-theme">Tema</div><div class="co-label">Alegria no Trabalho</div></div>
+        <div class="co-check"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.5 2.5 5-5" stroke="#009ADE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="card-option bg5" data-id="5" data-theme="Reconhecimento" data-label="Reconhecimento" data-color="#8A1E41" onclick="selectCard(this)">
+        <div><div class="co-theme">Tema</div><div class="co-label">Reconhecimento</div></div>
+        <div class="co-check"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.5 2.5 5-5" stroke="#8A1E41" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="card-option bg6" data-id="6" data-theme="Parceria" data-label="Parceria" data-color="#6558B0" onclick="selectCard(this)">
+        <div><div class="co-theme">Tema</div><div class="co-label">Parceria</div></div>
+        <div class="co-check"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.5 2.5 5-5" stroke="#6558B0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="card-option bg7" data-id="7" data-theme="Legado" data-label="Legado" data-color="#185FA5" onclick="selectCard(this)">
+        <div><div class="co-theme">Tema</div><div class="co-label">Legado</div></div>
+        <div class="co-check"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.5 2.5 5-5" stroke="#3B6D11" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="card-option bg8" data-id="8" data-theme="Dedicação" data-label="Dedicação" data-color="#9ea1a2" onclick="selectCard(this)">
+        <div><div class="co-theme">Tema</div><div class="co-label">Dedicação</div></div>
+        <div class="co-check"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.5 2.5 5-5" stroke="#854F0B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="card-option bg9" data-id="9" data-theme="Confiança" data-label="Confiança" data-color="#abc8e7" onclick="selectCard(this)">
+        <div><div class="co-theme">Tema</div><div class="co-label">Confiança</div></div>
+        <div class="co-check"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.5 2.5 5-5" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      
+      <!-- CARD LIVRE -->
+      <div class="card-option custom-card" data-id="custom" data-theme="" data-label="" data-color="#2d2d2d" onclick="selectCard(this)">
+        <div>
+          <div class="co-theme" style="color:var(--muted)">Tema livre</div>
+          <div class="co-label" style="color:var(--text);font-size:15px">Criar o meu próprio ✦</div>
+          <div class="custom-input-wrap" id="custom-inputs">
+            <input class="custom-theme-input" id="custom-theme-val" placeholder="Nome do tema (ex: Amizade)" maxlength="30" oninput="updateCustomCard()" onclick="event.stopPropagation()">
+            
+            
+            <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;position:relative" onclick="event.stopPropagation()">
+              <div class="color-dot" style="background:#0B3471" data-color="#0B3471" data-name="Azul Escuro · Pantone 654 C" onclick="pickColor(this,event)" onmouseenter="showColorTooltip(this)" onmouseleave="hideColorTooltip()"></div>
+              <div class="color-dot" style="background:#0047BB" data-color="#0047BB" data-name="Azul Forte · Pantone 2728 C" onclick="pickColor(this,event)" onmouseenter="showColorTooltip(this)" onmouseleave="hideColorTooltip()"></div>
+              <div class="color-dot" style="background:#009ADE" data-color="#009ADE" data-name="Azul Céu · Pantone 2925 C" onclick="pickColor(this,event)" onmouseenter="showColorTooltip(this)" onmouseleave="hideColorTooltip()"></div>
+              <div class="color-dot" style="background:#00A98E" data-color="#00A98E" data-name="Verde Água · Pantone 3268 C" onclick="pickColor(this,event)" onmouseenter="showColorTooltip(this)" onmouseleave="hideColorTooltip()"></div>
+              <div class="color-dot" style="background:#6558B0" data-color="#6558B0" data-name="Roxo · Pantone 2102 C" onclick="pickColor(this,event)" onmouseenter="showColorTooltip(this)" onmouseleave="hideColorTooltip()"></div>
+              <div class="color-dot" style="background:#8A1E41" data-color="#8A1E41" data-name="Vinho · Pantone 208 C" onclick="pickColor(this,event)" onmouseenter="showColorTooltip(this)" onmouseleave="hideColorTooltip()"></div>
+              <div class="color-dot" style="background:#185FA5" data-color="#185FA5" data-name="Azul Médio · Pantone 2728 C" onclick="pickColor(this,event)" onmouseenter="showColorTooltip(this)" onmouseleave="hideColorTooltip()"></div>
+              <div class="color-dot" style="background:#9ea1a2" data-color="#9ea1a2" data-name="Cinza · Pantone 422 C" onclick="pickColor(this,event)" onmouseenter="showColorTooltip(this)" onmouseleave="hideColorTooltip()"></div>
+              <div class="color-dot" style="background:#abc8e7" data-color="#abc8e7" data-name="Azul Claro · Pantone 277 C" onclick="pickColor(this,event)" onmouseenter="showColorTooltip(this)" onmouseleave="hideColorTooltip()"></div>
+            </div>
+            <div id="color-tooltip" style="display:none;position:absolute;background:#0B3471;color:white;font-size:10px;font-weight:600;letter-spacing:1px;padding:4px 12px;border-radius:20px;white-space:nowrap;pointer-events:none;z-index:999;top:calc(100% + 6px);left:0;">✦ Cor oficial Sisprime</div>
+              </div>
+          </div>
+        </div>
+        <div class="co-check" style="background:rgba(27,44,113,0.1)"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l2.5 2.5 5-5" stroke="#1B2C71" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </div>
+
+    <div class="nav-btns">
+      <span></span>
+      
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="panel" id="panel-2">
+    <h2 class="panel-title">Escreva sua <em>mensagem</em></h2>
+    <p class="panel-sub">Personalize o cartão com as suas palavras.</p>
+
+    <div class="sel-preview">
+      <div class="prev-swatch" id="prev-swatch"></div>
+      <div class="prev-info">
+        <div class="prev-theme" id="prev-theme"></div>
+        <div class="prev-label" id="prev-label"></div>
+      </div>
+      <span class="prev-change" onclick="goStep(1)">← Trocar tema</span>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-row">
+        <label class="form-label">De (seu nome)</label>
+        <input class="form-input" id="input-from" type="text" placeholder="Ex: Felipe" maxlength="40">
+      </div>
+      <div class="form-row">
+        <label class="form-label">Para (quem vai receber)</label>
+        <input class="form-input" id="input-to" type="text" placeholder="Ex: Gabriel" maxlength="40">
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Sua mensagem</label>
+      <textarea class="form-textarea" id="input-msg" placeholder="Escreva algo especial aqui..." maxlength="220" oninput="updateCharCount()"></textarea>
+      <div class="char-count"><span id="char-count">0</span> / 220</div>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn-nav btn-back" onclick="goStep(1)">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 12l-4-4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Voltar
+      </button>
+      <button class="btn-nav btn-next" onclick="generateCard()">Gerar cartão ✦</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="panel" id="panel-3">
+    <h2 class="panel-title">Seu cartão está <em>pronto!</em></h2>
+    <p class="panel-sub">Salve a imagem e envie por WhatsApp, e-mail ou como quiser.</p>
+
+    <div class="result-wrap">
+      <div class="gen-card" id="gen-card">
+        <div class="gc-bg" id="gc-bg"></div>
+        <div class="gc-deco1"></div><div class="gc-deco2"></div>
+        <div class="gc-border"></div>
+        <div class="gc-content">
+          <div>
+            <div class="gc-label" id="gc-label"></div>
+            <div class="gc-msg" id="gc-msg"></div>
+          </div>
+          <div class="gc-bottom">
+            <div class="gc-msg-area">
+              <div class="gc-from">De: <span class="gc-name" id="gc-from"></span></div>
+              <div class="gc-to">Para: <span class="gc-name" id="gc-to"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="gc-sign">Feliz Dia do Trabalhador!</div>
+        <div class="gc-logo">
+          <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyNy4yLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCA2MjAuOSAzMDguMiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNjIwLjkgMzA4LjI7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+DQoJLnN0MHtmaWxsOiNGRkZGRkY7fQ0KPC9zdHlsZT4NCjxnPg0KCTxnPg0KCQk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMjgxLDE0OC44VjE0M2MwLTEuNS0xLjgtMi40LTMtMS41bC04LjYsNi41djQ1LjVIMjgxdi0zMC44YzEuMi0zLjcsMi43LTYuNCw0LjUtOC4xDQoJCQljMS44LTEuNywzLjktMi41LDYuMy0yLjVjMS42LDAsMy4zLDAuMyw1LDFsMi0xMC41Yy0xLjctMS0zLjgtMS41LTYuMi0xLjVDMjg3LjUsMTQxLDI4My42LDE0My43LDI4MSwxNDguOHoiLz4NCgkJPHBhdGggY2xhc3M9InN0MCIgZD0iTTExNy4xLDE2NS45Yy0yLjItMS01LTItOC41LTMuMWMtMy41LTEuMS02LTIuMS03LjYtM2MtMS42LTAuOS0yLjQtMi4yLTIuNC0zLjljMC0xLjYsMC43LTIuOSwyLjItNA0KCQkJYzEuNS0xLDMuNS0xLjYsNi0xLjZjMi4yLDAsNC41LDAuMyw2LjksMWMyLjQsMC43LDQuNSwxLjYsNi40LDIuN2wzLjYtOC4yYy0yLjEtMS41LTQuNy0yLjctNy43LTMuNWMtMy0wLjktNi4yLTEuMy05LjUtMS4zDQoJCQljLTUuOCwwLTEwLjUsMS40LTE0LDQuMWMtMy41LDIuOC01LjIsNi41LTUuMiwxMS4yYzAsMy4xLDAuOCw1LjYsMi4zLDcuNmMxLjUsMS45LDMuMywzLjQsNS41LDQuNGMyLjEsMSw0LjksMiw4LjMsMy4xDQoJCQljMy41LDEuMSw2LjEsMi4xLDcuNywzLjFjMS42LDEsMi40LDIuMywyLjQsNC4xYzAsMS44LTAuOSwzLjMtMi42LDQuNWMtMS43LDEuMi00LjEsMS43LTcuMiwxLjdjLTIuNiwwLTUuMS0wLjQtNy43LTEuMg0KCQkJYy0yLjUtMC44LTQuOC0xLjktNi44LTMuNGwtMy4xLDljMi4yLDEuNyw0LjksMyw4LjEsNGMzLjIsMSw2LjYsMS41LDEwLjIsMS41YzYuMiwwLDExLjItMS41LDE1LTQuNGMzLjgtMi45LDUuNy03LDUuNy0xMi4yDQoJCQljMC0zLjMtMC44LTUuOS0yLjQtNy45QzEyMS4yLDE2OC4zLDExOS4zLDE2Ni45LDExNy4xLDE2NS45eiIvPg0KCQk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMTQ1LjQsMTQxLjRsLTguNiw2LjV2NDUuNWgxMS42di01MC40QzE0OC40LDE0MS40LDE0Ni43LDE0MC41LDE0NS40LDE0MS40eiIvPg0KCQk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMzE2LjEsMTQxLjRsLTguNiw2LjV2NDUuNWgxMS42VjE0M0MzMTkuMSwxNDEuNCwzMTcuMywxNDAuNSwzMTYuMSwxNDEuNHoiLz4NCgkJPHBhdGggY2xhc3M9InN0MCIgZD0iTTE5MS4xLDE2NS45Yy0yLjItMS01LTItOC41LTMuMWMtMy41LTEuMS02LTIuMS03LjYtM2MtMS42LTAuOS0yLjQtMi4yLTIuNC0zLjljMC0xLjYsMC43LTIuOSwyLjItNA0KCQkJYzEuNS0xLDMuNS0xLjYsNi0xLjZjMi4yLDAsNC41LDAuMyw2LjksMWMyLjQsMC43LDQuNSwxLjYsNi40LDIuN2wzLjYtOC4yYy0yLjEtMS41LTQuNy0yLjctNy43LTMuNWMtMy0wLjktNi4yLTEuMy05LjUtMS4zDQoJCQljLTUuOCwwLTEwLjUsMS40LTE0LDQuMWMtMy41LDIuOC01LjIsNi41LTUuMiwxMS4yYzAsMy4xLDAuOCw1LjYsMi4zLDcuNmMxLjUsMS45LDMuMywzLjQsNS41LDQuNGMyLjEsMSw0LjksMiw4LjMsMy4xDQoJCQljMy41LDEuMSw2LjEsMi4xLDcuNywzLjFjMS42LDEsMi40LDIuMywyLjQsNC4xYzAsMS44LTAuOSwzLjMtMi42LDQuNWMtMS43LDEuMi00LjEsMS43LTcuMiwxLjdjLTIuNiwwLTUuMS0wLjQtNy43LTEuMg0KCQkJYy0yLjUtMC44LTQuOC0xLjktNi44LTMuNGwtMy4xLDljMi4yLDEuNyw0LjksMyw4LjEsNGMzLjIsMSw2LjYsMS41LDEwLjIsMS41YzYuMiwwLDExLjItMS41LDE1LTQuNGMzLjgtMi45LDUuNy03LDUuNy0xMi4yDQoJCQljMC0zLjMtMC44LTUuOS0yLjQtNy45QzE5NS4yLDE2OC4zLDE5My4zLDE2Ni45LDE5MS4xLDE2NS45eiIvPg0KCQk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNNDY0LjMsMTY0LjhjMC00LjMtMC44LTguMi0yLjUtMTEuOGMtMS43LTMuNi00LjItNi41LTcuNi04LjdjLTMuNC0yLjItNy42LTMuMy0xMi41LTMuMw0KCQkJYy00LjksMC05LjEsMS4xLTEyLjksMy4zYy0zLjcsMi4yLTYuNiw1LjQtOC42LDkuNWMtMiw0LjEtMy4xLDguOC0zLjEsMTQuM2MwLDUuOCwxLjEsMTAuNywzLjMsMTQuOGMyLjIsNCw1LjMsNyw5LjEsOQ0KCQkJYzMuOCwyLDguMSwzLDEyLjksM2M4LjUsMCwxNS42LTIuMywyMS40LTYuOWwtNC43LTcuNmMtNC4zLDMuNC05LjQsNS4xLTE1LjEsNS4xYy04LjksMC0xNC00LjctMTUuMS0xNGgzNC44DQoJCQlDNDY0LjEsMTY5LjksNDY0LjMsMTY3LjcsNDY0LjMsMTY0Ljh6IE00MjguOCwxNjMuN2MwLjUtNC41LDEuOC03LjksNC4xLTEwLjJjMi4zLTIuMyw1LjMtMy40LDkuMS0zLjRjMy42LDAsNi40LDEuMiw4LjQsMy42DQoJCQljMiwyLjQsMyw1LjgsMy4yLDEwLjFINDI4Ljh6Ii8+DQoJCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0yNDcuMywxNDRjLTMuMi0xLjktNi43LTIuOS0xMC41LTIuOWMtMy4zLDAtMjYsMS41LTI2LDEuNXY2NC45aDExLjZ2LTE2LjljMy4yLDEuOSw3LDIuOCwxMS41LDIuOA0KCQkJYzQuMywwLDguMy0xLjIsMTEuOS0zLjVjMy42LTIuMyw2LjUtNS42LDguNi05LjhjMi4xLTQuMywzLjItOS4yLDMuMi0xNC45YzAtNS40LTEtOC42LTIuOS0xMi41QzI1MywxNDguOCwyNTAuNCwxNDUuOSwyNDcuMywxNDQNCgkJCXogTTI0My45LDE3NS41Yy0xLjMsMi43LTMsNC43LTUuMSw2LjFjLTIuMSwxLjQtNC41LDIuMS03LDIuMWMtMiwwLTMuNy0wLjItNS4xLTAuN2MtMS40LTAuNS0yLjgtMS4zLTQuMy0yLjR2LTI5LjMNCgkJCWMwLDAsMCwwLDExLjYsMGMzLjQsMCw2LjIsMS40LDguNCw0LjFjMi4yLDIuNywzLjMsNS4zLDMuMywxMC43QzI0NS44LDE2OS43LDI0NS4yLDE3Mi45LDI0My45LDE3NS41eiIvPg0KCQk8Zz4NCgkJCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0zNzkuMSwxNTEuNmMxLjEtMC4zLDIuMy0wLjUsMy40LTAuNkMzODEuMywxNTEuMiwzODAuMiwxNTEuMywzNzkuMSwxNTEuNnoiLz4NCgkJCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik00MDQuNiwxNTUuNGMtMC42LTMtMS42LTUuNi0zLjEtNy43Yy0xLjUtMi4xLTMuNi0zLjgtNi4yLTQuOWMtMi42LTEuMi02LTEuOC0xMC4xLTEuOA0KCQkJCWMwLDAtOC43LTAuMS0xNy4zLDQuM2MtMS40LTEuMi0zLTIuMS00LjgtMi45Yy0yLjMtMC45LTUuMy0xLjQtOC45LTEuNGMtMy45LDAtMjEuMiwxLjUtMjEuMiwxLjV2NTAuOGgxMS43di00Mg0KCQkJCWMwLDAsNy4yLTAuMyw4LjUtMC4zYzMuOSwwLDYuNywxLjMsOC4xLDMuOWMxLjQsMi42LDIuMSw1LjUsMi4xLDExLjJ2MjcuMkgzNzV2LTI3LjRjMC0yLjItMC4xLTQuMi0wLjMtNi4xDQoJCQkJYy0wLjItMS45LTAuNi0zLjctMS4xLTUuNGwtMC4zLTAuOGMwLDAsMi42LTEuMiw1LjgtMS45YzEuMS0wLjMsMi4yLTAuNSwzLjQtMC42YzAuNCwwLDAuNywwLDEuMSwwYzQsMCw2LjgsMS4zLDguMiwzLjkNCgkJCQljMS40LDIuNiwyLjEsNi43LDIuMSwxMi40djI2aDExLjd2LTI3LjlDNDA1LjUsMTYxLjgsNDA1LjIsMTU4LjUsNDA0LjYsMTU1LjR6Ii8+DQoJCTwvZz4NCgk8L2c+DQoJPGc+DQoJCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik00OTUuMiw4OC43TDQ5NC44LDk5bDQwLjIsOC4zbC0zNS4xLTIxLjFDNDk3LjksODUsNDk1LjMsODYuNCw0OTUuMiw4OC43eiIvPg0KCQk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNNDkxLjYsMTY4LjNjLTAuMSwzLjIsNC4xLDQuNSw1LjcsMS43bDM3LjctNjIuN2wtNDIuMSwzMS41TDQ5MS42LDE2OC4zeiIvPg0KCQk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNNDU3LjIsOTEuM2MtMi41LTAuNS00LjUsMi4xLTMuNCw0LjRsMjQuMyw0OS42YzAuOCwxLjcsMy4xLDIuMyw0LjYsMS4xbDEwLjEtNy42bDEuOC0zOS44TDQ1Ny4yLDkxLjN6Ii8+DQoJPC9nPg0KPC9nPg0KPC9zdmc+DQo=" alt="Sisprime" id="gc-logo-img">
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn-action btn-primary" onclick="saveCard()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 7l3 3 3-3M2 11v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Salvar imagem
+        </button>
+        <button class="btn-action btn-secondary" onclick="openHowToModal()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a6 6 0 100 12A6 6 0 008 2zm0 4v4m0 2v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Como enviar?
+        </button>
+        <button class="btn-action btn-secondary" onclick="resetApp()">Criar outro cartão</button>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<footer>
+  <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyNy4yLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCA2MjAuOSAzMDguMiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNjIwLjkgMzA4LjI7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+DQoJLnN0MHtmaWxsOiMwQjM0NzE7fQ0KCS5zdDF7ZmlsbDojMDA0N0JCO30NCjwvc3R5bGU+DQo8Zz4NCgk8Zz4NCgkJPHBhdGggY2xhc3M9InN0MCIgZD0iTTI4MSwxNDguOFYxNDNjMC0xLjUtMS44LTIuNC0zLTEuNWwtOC42LDYuNXY0NS41SDI4MXYtMzAuOGMxLjItMy43LDIuNy02LjQsNC41LTguMQ0KCQkJYzEuOC0xLjcsMy45LTIuNSw2LjMtMi41YzEuNiwwLDMuMywwLjMsNSwxbDItMTAuNWMtMS43LTEtMy44LTEuNS02LjItMS41QzI4Ny41LDE0MSwyODMuNiwxNDMuNywyODEsMTQ4Ljh6Ii8+DQoJCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xMTcuMSwxNjUuOWMtMi4yLTEtNS0yLTguNS0zLjFjLTMuNS0xLjEtNi0yLjEtNy42LTNjLTEuNi0wLjktMi40LTIuMi0yLjQtMy45YzAtMS42LDAuNy0yLjksMi4yLTQNCgkJCWMxLjUtMSwzLjUtMS42LDYtMS42YzIuMiwwLDQuNSwwLjMsNi45LDFjMi40LDAuNyw0LjUsMS42LDYuNCwyLjdsMy42LTguMmMtMi4xLTEuNS00LjctMi43LTcuNy0zLjVjLTMtMC45LTYuMi0xLjMtOS41LTEuMw0KCQkJYy01LjgsMC0xMC41LDEuNC0xNCw0LjFjLTMuNSwyLjgtNS4yLDYuNS01LjIsMTEuMmMwLDMuMSwwLjgsNS42LDIuMyw3LjZjMS41LDEuOSwzLjMsMy40LDUuNSw0LjRjMi4xLDEsNC45LDIsOC4zLDMuMQ0KCQkJYzMuNSwxLjEsNi4xLDIuMSw3LjcsMy4xYzEuNiwxLDIuNCwyLjMsMi40LDQuMWMwLDEuOC0wLjksMy4zLTIuNiw0LjVjLTEuNywxLjItNC4xLDEuNy03LjIsMS43Yy0yLjYsMC01LjEtMC40LTcuNy0xLjINCgkJCWMtMi41LTAuOC00LjgtMS45LTYuOC0zLjRsLTMuMSw5YzIuMiwxLjcsNC45LDMsOC4xLDRjMy4yLDEsNi42LDEuNSwxMC4yLDEuNWM2LjIsMCwxMS4yLTEuNSwxNS00LjRjMy44LTIuOSw1LjctNyw1LjctMTIuMg0KCQkJYzAtMy4zLTAuOC01LjktMi40LTcuOUMxMjEuMiwxNjguMywxMTkuMywxNjYuOSwxMTcuMSwxNjUuOXoiLz4NCgkJPHBhdGggY2xhc3M9InN0MCIgZD0iTTE0NS40LDE0MS40bC04LjYsNi41djQ1LjVoMTEuNnYtNTAuNEMxNDguNCwxNDEuNCwxNDYuNywxNDAuNSwxNDUuNCwxNDEuNHoiLz4NCgkJPHBhdGggY2xhc3M9InN0MCIgZD0iTTMxNi4xLDE0MS40bC04LjYsNi41djQ1LjVoMTEuNlYxNDNDMzE5LjEsMTQxLjQsMzE3LjMsMTQwLjUsMzE2LjEsMTQxLjR6Ii8+DQoJCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xOTEuMSwxNjUuOWMtMi4yLTEtNS0yLTguNS0zLjFjLTMuNS0xLjEtNi0yLjEtNy42LTNjLTEuNi0wLjktMi40LTIuMi0yLjQtMy45YzAtMS42LDAuNy0yLjksMi4yLTQNCgkJCWMxLjUtMSwzLjUtMS42LDYtMS42YzIuMiwwLDQuNSwwLjMsNi45LDFjMi40LDAuNyw0LjUsMS42LDYuNCwyLjdsMy42LTguMmMtMi4xLTEuNS00LjctMi43LTcuNy0zLjVjLTMtMC45LTYuMi0xLjMtOS41LTEuMw0KCQkJYy01LjgsMC0xMC41LDEuNC0xNCw0LjFjLTMuNSwyLjgtNS4yLDYuNS01LjIsMTEuMmMwLDMuMSwwLjgsNS42LDIuMyw3LjZjMS41LDEuOSwzLjMsMy40LDUuNSw0LjRjMi4xLDEsNC45LDIsOC4zLDMuMQ0KCQkJYzMuNSwxLjEsNi4xLDIuMSw3LjcsMy4xYzEuNiwxLDIuNCwyLjMsMi40LDQuMWMwLDEuOC0wLjksMy4zLTIuNiw0LjVjLTEuNywxLjItNC4xLDEuNy03LjIsMS43Yy0yLjYsMC01LjEtMC40LTcuNy0xLjINCgkJCWMtMi41LTAuOC00LjgtMS45LTYuOC0zLjRsLTMuMSw5YzIuMiwxLjcsNC45LDMsOC4xLDRjMy4yLDEsNi42LDEuNSwxMC4yLDEuNWM2LjIsMCwxMS4yLTEuNSwxNS00LjRjMy44LTIuOSw1LjctNyw1LjctMTIuMg0KCQkJYzAtMy4zLTAuOC01LjktMi40LTcuOUMxOTUuMiwxNjguMywxOTMuMywxNjYuOSwxOTEuMSwxNjUuOXoiLz4NCgkJPHBhdGggY2xhc3M9InN0MCIgZD0iTTQ2NC4zLDE2NC44YzAtNC4zLTAuOC04LjItMi41LTExLjhjLTEuNy0zLjYtNC4yLTYuNS03LjYtOC43Yy0zLjQtMi4yLTcuNi0zLjMtMTIuNS0zLjMNCgkJCWMtNC45LDAtOS4xLDEuMS0xMi45LDMuM2MtMy43LDIuMi02LjYsNS40LTguNiw5LjVjLTIsNC4xLTMuMSw4LjgtMy4xLDE0LjNjMCw1LjgsMS4xLDEwLjcsMy4zLDE0LjhjMi4yLDQsNS4zLDcsOS4xLDkNCgkJCWMzLjgsMiw4LjEsMywxMi45LDNjOC41LDAsMTUuNi0yLjMsMjEuNC02LjlsLTQuNy03LjZjLTQuMywzLjQtOS40LDUuMS0xNS4xLDUuMWMtOC45LDAtMTQtNC43LTE1LjEtMTRoMzQuOA0KCQkJQzQ2NC4xLDE2OS45LDQ2NC4zLDE2Ny43LDQ2NC4zLDE2NC44eiBNNDI4LjgsMTYzLjdjMC41LTQuNSwxLjgtNy45LDQuMS0xMC4yYzIuMy0yLjMsNS4zLTMuNCw5LjEtMy40YzMuNiwwLDYuNCwxLjIsOC40LDMuNg0KCQkJYzIsMi40LDMsNS44LDMuMiwxMC4xSDQyOC44eiIvPg0KCQk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMjQ3LjMsMTQ0Yy0zLjItMS45LTYuNy0yLjktMTAuNS0yLjljLTMuMywwLTI2LDEuNS0yNiwxLjV2NjQuOWgxMS42di0xNi45YzMuMiwxLjksNywyLjgsMTEuNSwyLjgNCgkJCWM0LjMsMCw4LjMtMS4yLDExLjktMy41YzMuNi0yLjMsNi41LTUuNiw4LjYtOS44YzIuMS00LjMsMy4yLTkuMiwzLjItMTQuOWMwLTUuNC0xLTguNi0yLjktMTIuNUMyNTMsMTQ4LjgsMjUwLjQsMTQ1LjksMjQ3LjMsMTQ0DQoJCQl6IE0yNDMuOSwxNzUuNWMtMS4zLDIuNy0zLDQuNy01LjEsNi4xYy0yLjEsMS40LTQuNSwyLjEtNywyLjFjLTIsMC0zLjctMC4yLTUuMS0wLjdjLTEuNC0wLjUtMi44LTEuMy00LjMtMi40di0yOS4zDQoJCQljMCwwLDAsMCwxMS42LDBjMy40LDAsNi4yLDEuNCw4LjQsNC4xYzIuMiwyLjcsMy4zLDUuMywzLjMsMTAuN0MyNDUuOCwxNjkuNywyNDUuMiwxNzIuOSwyNDMuOSwxNzUuNXoiLz4NCgkJPGc+DQoJCQk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMzc5LjEsMTUxLjZjMS4xLTAuMywyLjMtMC41LDMuNC0wLjZDMzgxLjMsMTUxLjIsMzgwLjIsMTUxLjMsMzc5LjEsMTUxLjZ6Ii8+DQoJCQk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNNDA0LjYsMTU1LjRjLTAuNi0zLTEuNi01LjYtMy4xLTcuN2MtMS41LTIuMS0zLjYtMy44LTYuMi00LjljLTIuNi0xLjItNi0xLjgtMTAuMS0xLjgNCgkJCQljMCwwLTguNy0wLjEtMTcuMyw0LjNjLTEuNC0xLjItMy0yLjEtNC44LTIuOWMtMi4zLTAuOS01LjMtMS40LTguOS0xLjRjLTMuOSwwLTIxLjIsMS41LTIxLjIsMS41djUwLjhoMTEuN3YtNDINCgkJCQljMCwwLDcuMi0wLjMsOC41LTAuM2MzLjksMCw2LjcsMS4zLDguMSwzLjljMS40LDIuNiwyLjEsNS41LDIuMSwxMS4ydjI3LjJIMzc1di0yNy40YzAtMi4yLTAuMS00LjItMC4zLTYuMQ0KCQkJCWMtMC4yLTEuOS0wLjYtMy43LTEuMS01LjRsLTAuMy0wLjhjMCwwLDIuNi0xLjIsNS44LTEuOWMxLjEtMC4zLDIuMi0wLjUsMy40LTAuNmMwLjQsMCwwLjcsMCwxLjEsMGM0LDAsNi44LDEuMyw4LjIsMy45DQoJCQkJYzEuNCwyLjYsMi4xLDYuNywyLjEsMTIuNHYyNmgxMS43di0yNy45QzQwNS41LDE2MS44LDQwNS4yLDE1OC41LDQwNC42LDE1NS40eiIvPg0KCQk8L2c+DQoJPC9nPg0KCTxnPg0KCQk8cGF0aCBjbGFzcz0ic3QxIiBkPSJNNDk1LjIsODguN0w0OTQuOCw5OWw0MC4yLDguM2wtMzUuMS0yMS4xQzQ5Ny45LDg1LDQ5NS4zLDg2LjQsNDk1LjIsODguN3oiLz4NCgkJPHBhdGggY2xhc3M9InN0MSIgZD0iTTQ5MS42LDE2OC4zYy0wLjEsMy4yLDQuMSw0LjUsNS43LDEuN2wzNy43LTYyLjdsLTQyLjEsMzEuNUw0OTEuNiwxNjguM3oiLz4NCgkJPHBhdGggY2xhc3M9InN0MSIgZD0iTTQ1Ny4yLDkxLjNjLTIuNS0wLjUtNC41LDIuMS0zLjQsNC40bDI0LjMsNDkuNmMwLjgsMS43LDMuMSwyLjMsNC42LDEuMWwxMC4xLTcuNmwxLjgtMzkuOEw0NTcuMiw5MS4zeiIvPg0KCTwvZz4NCjwvZz4NCjwvc3ZnPg0K" alt="Sisprime" style="height:24px;vertical-align:middle;margin-right:8px">
+  Dia do Trabalhador 2026 · Sisprime do Brasil
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+function openHowToModal(){
+  document.getElementById('how-to-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeHowToModal(){
+  document.getElementById('how-to-modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+function closeModal(e){
+  if(e.target===document.getElementById('how-to-modal')) closeHowToModal();
+}
+</script>
+<script>
+let selectedId = null, selectedData = {}, currentStep = 1;
+
+// CURSOR
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`});
+(function a(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`;requestAnimationFrame(a)})();
+document.querySelectorAll('button,a,.card-option,.prev-change').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='52px';ring.style.height='52px'});
+  el.addEventListener('mouseleave',()=>{ring.style.width='36px';ring.style.height='36px'});
+});
+
+function startApp(){document.getElementById('app').scrollIntoView({behavior:'smooth'})}
+
+function selectCard(el){
+  document.querySelectorAll('.card-option').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedId=el.dataset.id;
+  if(selectedId==='custom'){
+    document.getElementById('custom-inputs').classList.add('show');
+    const t=document.getElementById('custom-theme-val').value.trim();
+    selectedData={theme:t||'Tema livre',label:t||'Tema livre',color:customColor};
+  } else {
+    document.getElementById('custom-inputs').classList.remove('show');
+    selectedData={theme:el.dataset.theme,label:el.dataset.label,color:el.dataset.color};
+  }
+  if(selectedId!=='custom'){
+    goStep(2);
+  }
+}
+
+let customColor='#0B3471';
+function updateCustomCard(){
+  const t=document.getElementById('custom-theme-val').value.trim();
+  selectedData={theme:t||'Tema livre',label:t||'Tema livre',color:customColor};
+}
+function showColorTooltip(el){
+  const tip=document.getElementById('color-tooltip');
+  if(!tip)return;
+  const name=el.dataset.name||'Cor oficial Sisprime';
+  tip.textContent='✦ '+name+' · Cor oficial Sisprime';
+  tip.style.display='block';
+  const wrap=el.closest('div');
+  const wrapRect=wrap.getBoundingClientRect();
+  const elRect=el.getBoundingClientRect();
+  tip.style.left=(elRect.left - wrapRect.left)+'px';
+}
+function hideColorTooltip(){
+  const tip=document.getElementById('color-tooltip');
+  if(tip)tip.style.display='none';
+}
+function pickColor(el,e){
+  e.stopPropagation();
+  document.querySelectorAll('.color-dot').forEach(d=>d.classList.remove('active'));
+  el.classList.add('active');
+  customColor=el.dataset.color;
+  updateCustomCard();
+}
+
+function goStep(n){
+  document.getElementById(`panel-${currentStep}`).classList.remove('active');
+  ['si-1','si-2','si-3'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    el.classList.remove('active','done');
+    if(i+1<n)el.classList.add('done');
+    else if(i+1===n)el.classList.add('active');
+  });
+  currentStep=n;
+  document.getElementById(`panel-${n}`).classList.add('active');
+  if(n===2){
+    document.getElementById('prev-swatch').style.background=selectedData.color;
+    document.getElementById('prev-theme').textContent=selectedData.theme;
+    document.getElementById('prev-label').textContent=selectedData.label;
+  }
+  document.getElementById('app').scrollIntoView({behavior:'smooth'});
+}
+
+function updateCharCount(){document.getElementById('char-count').textContent=document.getElementById('input-msg').value.length}
+
+function generateCard(){
+  const from=document.getElementById('input-from').value.trim();
+  const to=document.getElementById('input-to').value.trim();
+  const msg=document.getElementById('input-msg').value.trim();
+  if(!from||!to){showToast('Preencha seu nome e o nome de quem vai receber 😊');return}
+  document.getElementById('gc-bg').style.background=selectedData.color;
+  document.getElementById('gc-label').textContent=selectedData.theme.toUpperCase();
+  document.getElementById('gc-msg').textContent=msg||'';
+  document.getElementById('gc-from').textContent=from;
+  document.getElementById('gc-to').textContent=to;
+  goStep(3);
+}
+
+function saveCard(){
+  showToast('Gerando imagem...');
+  const logoImg = document.getElementById('gc-logo-img');
+  const svgSrc = logoImg.src;
+  const img = new Image();
+  img.onload = function(){
+    const cv = document.createElement('canvas');
+    cv.width = img.naturalWidth || 200;
+    cv.height = img.naturalHeight || 100;
+    const ctx = cv.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    logoImg.src = cv.toDataURL('image/png');
+    setTimeout(()=>{
+      html2canvas(document.getElementById('gen-card'),{scale:2,useCORS:true,allowTaint:true,backgroundColor:null,logging:false}).then(canvas=>{
+        const a=document.createElement('a');
+        a.download='cartao-dia-do-trabalhador-sisprime.png';
+        a.href=canvas.toDataURL('image/png');
+        a.click();
+        logoImg.src = svgSrc;
+        showToast('✓ Imagem salva!');
+      });
+    }, 100);
+  };
+  img.crossOrigin = 'anonymous';
+  img.src = svgSrc;
+}
+
+
+
+function resetApp(){
+  selectedId=null;selectedData={};
+  document.querySelectorAll('.card-option').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('custom-inputs').classList.remove('show');
+  document.getElementById('custom-theme-val').value='';
+  ['input-from','input-to','input-msg'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('char-count').textContent='0';
+  goStep(1);
+  document.getElementById('hero').scrollIntoView({behavior:'smooth'});
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+function openHowToModal(){
+  document.getElementById('how-to-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeHowToModal(){
+  document.getElementById('how-to-modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+function closeModal(e){
+  if(e.target===document.getElementById('how-to-modal')) closeHowToModal();
+}
+</script>
+
+<!-- MODAL COMO ENVIAR -->
+<div class="modal-overlay" id="how-to-modal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Como enviar o cartão</h3>
+      <button class="modal-close" onclick="closeHowToModal()">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- E-MAIL -->
+      <div class="modal-channel">
+        <div class="modal-channel-title">
+          <div class="modal-channel-icon email">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M2 4h14v11H2V4zm0 0l7 7 7-7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span>Por e-mail (Outlook)</span>
+        </div>
+        <div class="modal-steps">
+          <div class="modal-step">
+            <div class="modal-step-num">1</div>
+            <p>Clique em <strong>"Salvar imagem"</strong> para baixar o cartão no seu computador</p>
+          </div>
+          <div class="modal-step">
+            <div class="modal-step-num">2</div>
+            <p>Abra o <strong>Outlook</strong> e crie um novo e-mail para a pessoa</p>
+          </div>
+          <div class="modal-step">
+            <div class="modal-step-num">3</div>
+            <p>Clique no <strong>ícone de anexo 📎</strong> e selecione a imagem salva</p>
+          </div>
+          <div class="modal-step">
+            <div class="modal-step-num">4</div>
+            <p>Escreva uma mensagem e envie! 🎉</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-divider"></div>
+
+      <!-- TEAMS -->
+      <div class="modal-channel">
+        <div class="modal-channel-title">
+          <div class="modal-channel-icon teams">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <rect x="2" y="5" width="10" height="9" rx="2" stroke="white" stroke-width="1.5"/>
+              <path d="M12 7l4-2v8l-4-2" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span>Pelo Microsoft Teams</span>
+        </div>
+        <div class="modal-steps">
+          <div class="modal-step">
+            <div class="modal-step-num" style="background:#6558B0">1</div>
+            <p>Clique em <strong>"Salvar imagem"</strong> para baixar o cartão</p>
+          </div>
+          <div class="modal-step">
+            <div class="modal-step-num" style="background:#6558B0">2</div>
+            <p>Abra o <strong>Teams</strong> e vá até a conversa ou chat da pessoa</p>
+          </div>
+          <div class="modal-step">
+            <div class="modal-step-num" style="background:#6558B0">3</div>
+            <p>Clique no <strong>ícone de anexo 📎</strong> na barra de mensagem</p>
+          </div>
+          <div class="modal-step">
+            <div class="modal-step-num" style="background:#6558B0">4</div>
+            <p>Selecione a imagem salva e envie! 🎉</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-divider"></div>
+
+      <div class="modal-tip">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="6" stroke="#0B3471" stroke-width="1.5"/>
+          <path d="M8 5v4M8 11v.5" stroke="#0B3471" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <p><strong>Dica:</strong> A imagem fica salva na pasta <strong>Downloads</strong> do seu computador com o nome <em>cartao-dia-do-trabalhador-sisprime.png</em></p>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>
